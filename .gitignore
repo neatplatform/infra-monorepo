@@ -1,0 +1,31 @@
+# IDE and OS-specific files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local .terraform directories
+.terraform/
+
+# Transient lock file
+.terraform.tfstate.lock.info
+
+# Backend files
+*.tfbackend
+
+# State files
+*.tfstate
+*.tfstate.*
+
+# tfvars files (may contain sensitive secrets)
+*.tfvars
+*.tfvars.json
+
+# Override files (usually used to override resources locally)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Log files
+*.log
