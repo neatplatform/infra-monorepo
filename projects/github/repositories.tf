@@ -148,3 +148,38 @@ module "infra-monorepo" {
     },
   ]
 }
+
+module "craft" {
+  source = "../../modules/github/repository"
+
+  name        = "craft"
+  description = "A toolkit for building command-line applications in Go"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "go", "package", "lib", "library",
+    "toolkit", "cli", "terminal",
+  ]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+  ]
+}
