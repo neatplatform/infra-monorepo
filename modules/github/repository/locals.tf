@@ -2,10 +2,7 @@
 
 locals {
   default_branch = "main"
-  default_labels = []
+  default_labels = {}
 
-  merged_labels = merge(
-    { for l in local.default_labels : l.name => l },
-    { for l in var.labels : l.name => l }
-  )
+  all_labels = merge(local.default_labels, var.labels)
 }

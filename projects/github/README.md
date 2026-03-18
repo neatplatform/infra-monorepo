@@ -33,6 +33,9 @@ terraform import 'github_membership.members["username"]' organization:username
 
 # Import a repository
 terraform import 'module.name.github_repository.repo' repo
+
+# Import a default branch
+terraform import 'module.name.github_branch_default.default_branch' repo
 ```
 
 ### Import Block
@@ -53,6 +56,12 @@ import {
 # Import a repository
 import {
   to = module.name.github_repository.repo
+  id = "repo"
+}
+
+# Import a default branch
+import {
+  to = module.name.github_branch_default.default_branch
   id = "repo"
 }
 ```
