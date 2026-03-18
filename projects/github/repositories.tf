@@ -22,9 +22,9 @@ module "renovate-config" {
   archived    = false
 
   topics = [
-    "renovate",
     "automation", "devops", "sre",
     "go", "javascript",
+    "renovate",
   ]
 
   # Enable merge queue with default settings.
@@ -43,7 +43,7 @@ module "renovate-config" {
       integration_id = 15368,
     },
     {
-      context        = "Config / Validate"
+      context        = "Call / Validate"
       integration_id = 15368
     },
   ]
@@ -58,7 +58,8 @@ module "actions" {
   archived    = false
 
   topics = [
-    "github", "actions", "automation", "devops", "sre",
+    "automation", "devops", "sre",
+    "monorepo", "github", "action", "workflow",
     "go", "javascript", "ruby", "bash", "terraform", "kubernetes",
     "renovate",
   ]
@@ -127,7 +128,8 @@ module "infra-monorepo" {
 
   topics = [
     "automation", "devops", "sre",
-    "infra-as-code", "monorepo", "terraform", "kubernetes",
+    "monorepo", "infra-as-code", "terraform",
+    "github", "aws", "google-cloud", "azure", "kubernetes",
     "renovate",
   ]
 
@@ -147,4 +149,124 @@ module "infra-monorepo" {
       integration_id = 15368,
     },
   ]
+}
+
+module "craft" {
+  source = "../../modules/github/repository"
+
+  name        = "craft"
+  description = "A toolkit for building command-line applications in Go"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "go", "package", "cli", "terminal",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
+  ]
+}
+
+module "go-github" {
+  source = "../../modules/github/repository"
+
+  name        = "go-github"
+  description = "The simple Go client for GitHub REST and GraphQL APIs"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "github", "api", "rest", "graphql",
+    "go", "package", "client", "http",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+  ]
+}
+
+module "changelog" {
+  source = "../../modules/github/repository"
+
+  name        = "changelog"
+  description = "The simple changelog generator"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "changelog", "github", "markdown",
+    "go", "app", "package", "cli", "terminal",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+  ]
+}
+
+# Import a repository
+import {
+  to = module.go-github.github_repository.repo
+  id = "go-github"
+}
+
+# Import a default branch
+import {
+  to = module.go-github.github_branch_default.default_branch
+  id = "go-github"
 }

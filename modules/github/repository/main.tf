@@ -23,6 +23,28 @@ resource "github_repository" "repo" {
   allow_update_branch         = true
   allow_auto_merge            = false
   delete_branch_on_merge      = true
+
+  # Security and Analysis
+  # https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#security-and-analysis-configuration
+  dynamic "security_and_analysis" {
+    for_each = var.visibility == "public" ? [1] : []
+
+    content {
+      # Advanced security is always available for public repos
+      # advanced_security {
+      #   status = "enabled"
+      # }
+      code_security {
+        status = "enabled"
+      }
+      secret_scanning {
+        status = "enabled"
+      }
+      secret_scanning_push_protection {
+        status = "enabled"
+      }
+    }
+  }
 }
 
 # https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default
@@ -96,18 +118,26 @@ resource "github_repository_ruleset" "default_branch_protection" {
 }
 
 # https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_labels
-resource "github_issue_labels" "labels" {
-  count = length(local.merged_labels) > 0 ? 1 : 0
+resource "github_issue_label" "labels" {
+  for_each = local.all_labels
 
-  repository = github_repository.repo.name
+  repository  = github_repository.repo.name
+  name        = each.key
+  color       = each.value.color
+  description = each.value.description
+}
 
-  dynamic "label" {
-    for_each = local.merged_labels
+# https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret
+resource "github_actions_secret" "secrets" {
+  for_each = toset(var.secrets)
 
-    content {
-      name        = label.value.name
-      color       = label.value.color
-      description = label.value.description
-    }
+  repository      = github_repository.repo.name
+  secret_name     = each.value
+  plaintext_value = "placeholder"
+
+  # remote_updated_at is set by GitHub when the secret is updated via UI or API.
+  # Ignoring it prevents Terraform from overriding the secret with an invalid value.
+  lifecycle {
+    ignore_changes = [remote_updated_at]
   }
 }

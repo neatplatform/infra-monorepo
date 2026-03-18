@@ -50,14 +50,20 @@ variable "topics" {
 
 variable "labels" {
   description = "List of labels for the GitHub repository."
-  type = list(object({
-    name        = string
+  type = map(object({
     color       = string
     description = optional(string)
   }))
 
   nullable = false
-  default  = []
+  default  = {}
+}
+
+variable "secrets" {
+  description = "List of labels for the GitHub repository."
+  type        = list(string)
+  nullable    = false
+  default     = []
 }
 
 variable "merge_queue" {

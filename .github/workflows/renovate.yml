@@ -8,8 +8,8 @@ on:
       - main  # Merge queue validation
 
 jobs:
-  config:
+  call:
+    name: Call
     uses: neatplatform/renovate-config/.github/workflows/reusable-renovate.yml@main
-    name: Config
     permissions:
       contents: read
