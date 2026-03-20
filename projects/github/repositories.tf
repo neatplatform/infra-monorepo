@@ -9,7 +9,7 @@ module "github" {
   archived    = false
 
   topics = [
-    "github", "template",
+    "github", "community", "template", "issue", "pull-request",
   ]
 }
 
@@ -225,6 +225,22 @@ module "go-github" {
     #   context        = "CodeQL",
     #   integration_id = 57789,
     # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
   ]
 }
 
