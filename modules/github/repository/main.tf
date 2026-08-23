@@ -131,13 +131,7 @@ resource "github_issue_label" "labels" {
 resource "github_actions_secret" "secrets" {
   for_each = toset(var.secrets)
 
-  repository      = github_repository.repo.name
-  secret_name     = each.value
-  plaintext_value = "placeholder"
-
-  # remote_updated_at is set by GitHub when the secret is updated via UI or API.
-  # Ignoring it prevents Terraform from overriding the secret with an invalid value.
-  lifecycle {
-    ignore_changes = [remote_updated_at]
-  }
+  repository  = github_repository.repo.name
+  secret_name = each.value
+  value       = "placeholder"
 }
