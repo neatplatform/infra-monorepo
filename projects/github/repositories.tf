@@ -9,7 +9,7 @@ module "github" {
   archived    = false
 
   topics = [
-    "github", "template",
+    "github", "community", "template", "issue", "pull-request",
   ]
 }
 
@@ -151,6 +151,40 @@ module "infra-monorepo" {
   ]
 }
 
+module "compose" {
+  source = "../../modules/github/repository"
+
+  name        = "compose"
+  description = "A collection of Docker Compose files for local development and testing"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "compose", "docker", "podman", "container",
+    "dev", "testing",
+    "database", "observability", "telemetry",
+    "logging", "metrics", "tracing",
+    "renovate",
+  ]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+  ]
+}
+
 module "craft" {
   source = "../../modules/github/repository"
 
@@ -207,7 +241,7 @@ module "go-github" {
 
   topics = [
     "github", "api", "rest", "graphql",
-    "go", "package", "client", "http",
+    "go", "package", "client",
     "renovate",
   ]
 
@@ -225,6 +259,22 @@ module "go-github" {
     #   context        = "CodeQL",
     #   integration_id = 57789,
     # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
   ]
 }
 
@@ -238,7 +288,7 @@ module "changelog" {
 
   topics = [
     "changelog", "github", "markdown",
-    "go", "app", "package", "cli", "terminal",
+    "go", "package", "cli", "terminal",
     "renovate",
   ]
 
@@ -256,17 +306,178 @@ module "changelog" {
     #   context        = "CodeQL",
     #   integration_id = 57789,
     # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Build",
+      integration_id = 15368,
+    },
   ]
 }
 
-# Import a repository
-import {
-  to = module.go-github.github_repository.repo
-  id = "go-github"
+module "mint" {
+  source = "../../modules/github/repository"
+
+  name        = "mint"
+  description = "🌱 Unopinionated libraries for building reliable services in Go"
+  website     = "https://neatplatform.github.io/mint"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "mint",
+    "go", "library",
+    "automation", "devops", "sre",
+    "config", "testing",
+    "observability", "telemetry",
+    "logging", "metrics", "tracing",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
+  ]
 }
 
-# Import a default branch
-import {
-  to = module.go-github.github_branch_default.default_branch
-  id = "go-github"
+module "mint-cli" {
+  source = "../../modules/github/repository"
+
+  name        = "mint-cli"
+  description = "The companion command-line tool for Mint 🌱"
+  website     = "https://neatplatform.github.io/mint-cli"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "mint",
+    "go", "cli", "terminal",
+    "automation", "devops", "sre",
+    "scaffolding", "build", "release",
+    "changelog", "semantic-versioning",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
+  ]
+}
+
+module "mint-templates" {
+  source = "../../modules/github/repository"
+
+  name        = "mint-templates"
+  description = "Scafoldding templates for the Mint CLI 🌱"
+  website     = "https://neatplatform.github.io/mint-templates"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "mint",
+    "templates", "scaffolding",
+    "automation", "devops", "sre",
+    "monorepo", "http", "grpc", "go",
+    "renovate",
+  ]
+
+  # Declare repository secrets.
+  secrets = ["CODECOV_TOKEN"]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    # FIXME: CodeQL does not run on merge queue triggers.
+    # See https://github.com/github/codeql-action/issues/1537
+    # {
+    #   context        = "CodeQL",
+    #   integration_id = 57789,
+    # },
+    {
+      context        = "Analyze actions",
+      integration_id = 15368,
+    },
+    {
+      context        = "Analyze go",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Lint",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Test",
+      integration_id = 15368,
+    },
+  ]
 }
