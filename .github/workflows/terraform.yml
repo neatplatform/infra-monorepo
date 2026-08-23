@@ -1,0 +1,41 @@
+name: Terraform
+on:
+  pull_request:
+    branches:
+      - main  # Pre-merge validation
+  merge_group:
+    branches:
+      - main  # Merge queue validation
+
+permissions:
+  contents: read
+
+jobs:
+  check-paths:
+    name: Check Paths
+    runs-on: ubuntu-latest
+    outputs:
+      github-changed: ${{ steps.github.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout Repository
+      - uses: neatplatform/actions/check-paths@main
+        name: Check projects/github
+        id: github
+        with:
+          paths: |
+            projects/github/**
+
+  github:
+    name: github
+    needs: check-paths
+    if: needs.check-paths.outputs.github-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout Repository
+      - uses: neatplatform/actions/terraform@main
+        name: Validate projects/github
+        with:
+          path: ./projects/github
+          args: validate
