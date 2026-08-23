@@ -3,13 +3,13 @@
 
 # https://developer.hashicorp.com/terraform/language/block/terraform
 terraform {
-  required_version = ">= 1.12.2"
+  required_version = ">= 1.15.9"
 
   required_providers {
     # https://registry.terraform.io/providers/integrations/github/latest
     github = {
       source  = "integrations/github"
-      version = ">= 6.11.1"
+      version = ">= 6.13.0"
     }
   }
 }
