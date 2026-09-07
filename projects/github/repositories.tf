@@ -13,6 +13,20 @@ module "github" {
   ]
 }
 
+module "skills" {
+  source = "../../modules/github/repository"
+
+  name        = "skills"
+  description = "NeatPlatform's Agent Skills — shared workflows, packaged as a plugin marketplace"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "ai", "agent", "skills", "plugin", "marketplace", "claude", "claude-code", 
+    "automation", "dev", "ops", "devops", "sre",
+  ]
+}
+
 module "renovate-config" {
   source = "../../modules/github/repository"
 
@@ -32,16 +46,6 @@ module "renovate-config" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Validate"
       integration_id = 15368
@@ -69,24 +73,6 @@ module "actions" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze ruby",
-      integration_id = 15368,
-    },
     {
       context        = "check-paths",
       integration_id = 15368,
@@ -138,14 +124,8 @@ module "infra-monorepo" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
     {
-      context        = "Analyze actions",
+      context        = "GitHub",
       integration_id = 15368,
     },
   ]
@@ -165,23 +145,6 @@ module "compose" {
     "database", "observability", "telemetry",
     "logging", "metrics", "tracing",
     "renovate",
-  ]
-
-  # Enable merge queue with default settings.
-  merge_queue = {}
-
-  # Enable the required status checks.
-  required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
   ]
 }
 
@@ -206,20 +169,6 @@ module "craft" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
@@ -253,20 +202,6 @@ module "go-github" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
@@ -300,20 +235,6 @@ module "changelog" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
@@ -356,20 +277,6 @@ module "mint" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
@@ -407,26 +314,16 @@ module "mint-cli" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
     },
     {
       context        = "Call / Test",
+      integration_id = 15368,
+    },
+    {
+      context        = "Call / Build",
       integration_id = 15368,
     },
   ]
@@ -457,20 +354,6 @@ module "mint-templates" {
 
   # Enable the required status checks.
   required_checks = [
-    # FIXME: CodeQL does not run on merge queue triggers.
-    # See https://github.com/github/codeql-action/issues/1537
-    # {
-    #   context        = "CodeQL",
-    #   integration_id = 57789,
-    # },
-    {
-      context        = "Analyze actions",
-      integration_id = 15368,
-    },
-    {
-      context        = "Analyze go",
-      integration_id = 15368,
-    },
     {
       context        = "Call / Lint",
       integration_id = 15368,
