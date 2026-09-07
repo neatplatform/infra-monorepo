@@ -1,7 +1,13 @@
 # https://developer.hashicorp.com/terraform/language/block/terraform
 terraform {
   # https://developer.hashicorp.com/terraform/language/backend/remote
-  backend "remote" {}
+  backend "remote" {
+    organization = "NeatPlatform"
+
+    workspaces {
+      name = "GitHub"
+    }
+  }
 }
 
 # https://registry.terraform.io/providers/integrations/github/latest/docs

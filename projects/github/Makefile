@@ -1,10 +1,5 @@
 remote.tfbackend:
-	@ echo 'token        = ""' >  remote.tfbackend;
-	@ echo 'organization = ""' >> remote.tfbackend;
-	@ echo                     >> remote.tfbackend;
-	@ echo 'workspaces {'      >> remote.tfbackend;
-	@ echo '  name = ""'       >> remote.tfbackend;
-	@ echo '}'                 >> remote.tfbackend;
+	@ echo 'token = ""' > remote.tfbackend;
 
 terraform.tfvars:
 	@ echo 'github_token = ""' > terraform.tfvars;
