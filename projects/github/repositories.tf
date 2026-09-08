@@ -25,6 +25,17 @@ module "skills" {
     "ai", "agent", "skills", "plugin", "marketplace", "claude", "claude-code", 
     "automation", "dev", "ops", "devops", "sre",
   ]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = [
+    {
+      context        = "Validate"
+      integration_id = 15368
+    },
+  ]
 }
 
 module "renovate-config" {

@@ -3,7 +3,7 @@
 
 # https://developer.hashicorp.com/terraform/language/block/terraform
 terraform {
-  required_version = "~> 1.16"
+  required_version = "~> 1.12"
 
   required_providers {
     # https://registry.terraform.io/providers/integrations/github/latest
