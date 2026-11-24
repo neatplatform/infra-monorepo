@@ -142,6 +142,27 @@ module "infra-monorepo" {
   ]
 }
 
+module "nix-config" {
+  source = "../../modules/github/repository"
+
+  name        = "nix-config"
+  description = "A declarative, reproducible, single source of truth for managing and configuring personal machines with Nix"
+  visibility  = "public"
+  archived    = false
+
+  topics = [
+    "automation", "devops",
+    "macos", "linux", "declarative", "configuration", "dotfiles",
+    "nix", "flakes", "nixpkgs", "nix-darwin", "home-manager",
+  ]
+
+  # Enable merge queue with default settings.
+  merge_queue = {}
+
+  # Enable the required status checks.
+  required_checks = []
+}
+
 module "compose" {
   source = "../../modules/github/repository"
 
